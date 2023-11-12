@@ -1,70 +1,81 @@
-import React, { useState, useEffect } from "react";
-import Task from "./Task";
+import React, { useState } from 'react';
+import { useTaskManager } from './useTaskManager';
+import Task from './Task';
 
 const TaskList = () => {
-  const initialTaskList = JSON.parse(localStorage.getItem("tasks")) || [];
-  const [tasks, setTasks] = useState(initialTaskList);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const { tasks, createTask, deleteTask, updateTask } = useTaskManager();
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+  });
 
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-  const handleAddTask = () => {
+  const handleAddTask = (e) => {
+    e.preventDefault();
+
+    // Validate the input
+    if (formData.title.length < 3) {
+      alert('El titulo debe tener almenos 3 caracteres.');
+      return;
+    }
+
     const newTask = {
       id: Date.now(),
-      title,
-      description,
+      title: formData.title,
+      description: formData.description,
       completed: false,
     };
 
-    setTasks([...tasks, newTask]);
-    setTitle("");
-    setDescription("");
-  };
-
-  const handleToggleTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks[index].completed = !newTasks[index].completed;
-    setTasks(newTasks);
-  };
-
-  const handleDeleteTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks.splice(index, 1);
-    setTasks(newTasks);
-  };
-
-  const handleEditTask = (index, newTitle, newDescription) => {
-    const newTasks = [...tasks];
-    newTasks[index].title = newTitle;
-    newTasks[index].description = newDescription;
-    setTasks(newTasks);
+    createTask(newTask);
+    setFormData({
+      title: '',
+      description: '',
+    });
   };
 
   return (
     <div>
-      <input
-        placeholder="Titulo"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
-      <textarea
-        placeholder="Descripcion de tarea"
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
-      />
-      <button onClick={handleAddTask}>Add Task</button>
+      <form onSubmit={handleAddTask}>
+        <label>
+          Titulo:
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            placeholder="Titulo"
+          />
+        </label>
+        <br />
+        <label>
+          Descripcion de tarea:
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            placeholder="Descripcion de tarea"
+          />
+        </label>
+        <br />
+        <button type="submit">Add Task</button>
+      </form>
 
-      {tasks.map((task, index) => (
+      {tasks.map((task) => (
         <Task
           key={task.id}
-          index={index}
           task={task}
-          handleToggleTask={handleToggleTask}
-          handleDeleteTask={handleDeleteTask}
-          handleEditTask={handleEditTask}
+          handleToggleTask={() => updateTask(task.id, { completed: !task.completed })}
+          handleDeleteTask={() => deleteTask(task.id)}
+          handleEditTask={(newTitle, newDescription) =>
+            updateTask(task.id, { title: newTitle, description: newDescription })
+          }
         />
       ))}
     </div>

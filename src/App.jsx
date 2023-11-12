@@ -9,8 +9,6 @@ function App() {
        
     <Header></Header>
     <TaskList></TaskList>
-   
-    
       
       </div>
     </>

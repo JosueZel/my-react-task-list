@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-const Task = ({ index, task, handleToggleTask, handleDeleteTask, handleEditTask }) => {
+const Task = ({ task, handleToggleTask, handleDeleteTask, handleEditTask }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
   const [newDescription, setNewDescription] = useState(task.description);
@@ -10,18 +10,18 @@ const Task = ({ index, task, handleToggleTask, handleDeleteTask, handleEditTask 
   };
 
   const handleSave = () => {
-    handleEditTask(index, newTitle, newDescription);
+    handleEditTask(newTitle, newDescription);
     setIsEditing(false);
   };
 
   return (
     <div>
-      <p style={task.completed ? { textDecoration: "line-through" } : {}}>
-        {index} - {task.title} - {task.description}{" "}
-        <button onClick={() => handleToggleTask(index)}>
-          {task.completed ? "Undo" : "Complete"}
+      <p style={task.completed ? { textDecoration: 'line-through' } : {}}>
+        {task.title} - {task.description}
+        <button onClick={handleToggleTask}>
+          {task.completed ? 'Undo' : 'Complete'}
         </button>
-        <button onClick={() => handleDeleteTask(index)}>Delete</button>
+        <button onClick={handleDeleteTask}>Delete</button>
         {!isEditing ? (
           <button onClick={handleEdit}>Edit</button>
         ) : (
