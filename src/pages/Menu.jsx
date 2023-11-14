@@ -1,21 +1,22 @@
+import { Tabs, Tab, TabList } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Menu() {
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/tareas">Tareas</Link>
-        </li>
-        <li>
-          <Link to="/sobre-nosotros">Sobre Nosotros</Link>
-        </li>
-      </ul>
-    </nav>
+    <Tabs variant="enclosed" colorScheme="teal" align="center">
+      <TabList>
+        <Tab as={Link} to="/">
+          Inicio
+        </Tab>
+        <Tab as={Link} to="/tareas">
+          Tareas
+        </Tab>
+        <Tab as={Link} to="/sobre-nosotros">
+          Sobre nosotros
+        </Tab>
+      </TabList>
+    </Tabs>
   );
 }
 

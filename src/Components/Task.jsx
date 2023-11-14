@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Box, Text, Button, Input, Textarea } from '@chakra-ui/react';
 
 const Task = ({ task, handleToggleTask, handleDeleteTask, handleEditTask }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,31 +16,28 @@ const Task = ({ task, handleToggleTask, handleDeleteTask, handleEditTask }) => {
   };
 
   return (
-    <div>
-      <p style={task.completed ? { textDecoration: 'line-through' } : {}}>
+    <Box mb={4}>
+      <Text fontSize={task.completed ? 'lg' : 'xl'} textDecoration={task.completed ? 'line-through' : 'none'}>
         {task.title} - {task.description}
-        <button onClick={handleToggleTask}>
-          {task.completed ? 'Undo' : 'Complete'}
-        </button>
-        <button onClick={handleDeleteTask}>Delete</button>
-        {!isEditing ? (
-          <button onClick={handleEdit}>Edit</button>
-        ) : (
-          <>
-            <input
-              type="text"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-            />
-            <textarea
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-            />
-            <button onClick={handleSave}>Save</button>
-          </>
-        )}
-      </p>
-    </div>
+      </Text>
+      <Button colorScheme={task.completed ? 'teal' : 'blue'} onClick={handleToggleTask} mr={2}>
+        {task.completed ? 'Undo' : 'Complete'}
+      </Button>
+      <Button colorScheme="red" onClick={handleDeleteTask} mr={2}>
+        Delete
+      </Button>
+      {!isEditing ? (
+        <Button onClick={handleEdit}>Edit</Button>
+      ) : (
+        <>
+          <Input mb={2} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
+          <Textarea mb={2} value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
+          <Button colorScheme="teal" onClick={handleSave} mr={2}>
+            Save
+          </Button>
+        </>
+      )}
+    </Box>
   );
 };
 
