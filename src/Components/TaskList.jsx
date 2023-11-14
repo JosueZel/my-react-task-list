@@ -42,7 +42,7 @@ const TaskList = () => {
   };
 
   return (
-    <VStack align="center" mt={8}>
+    <VStack align="center" mt={8} shadow="lg">
       <Heading mb={4}>Lista de Tareas</Heading>
       <form onSubmit={handleAddTask}>
         <Input

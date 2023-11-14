@@ -16,7 +16,7 @@ const Task = ({ task, handleToggleTask, handleDeleteTask, handleEditTask }) => {
   };
 
   return (
-    <Box mb={4}>
+    <Box mb={4} >
       <Text fontSize={task.completed ? 'lg' : 'xl'} textDecoration={task.completed ? 'line-through' : 'none'}>
         {task.title} - {task.description}
       </Text>
